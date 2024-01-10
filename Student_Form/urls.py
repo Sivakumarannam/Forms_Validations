@@ -27,3 +27,4 @@ urlpatterns = [
 admin.site.site_header='STUDENT FORM'
 admin.site.site_title='Student Registration'
 admin.site.index_title='Student Details'
+admin.site.site_url='https://s.in'

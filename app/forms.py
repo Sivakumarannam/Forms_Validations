@@ -1,4 +1,5 @@
 from django import forms
+from django.core import validators
 
 def validate_for_name(data):
     if data.lower().startswith('s'):
@@ -9,7 +10,7 @@ def validate_for_password(data):
         raise forms.ValidationError("Password must be more than 5 characters long.")
 
 class Student_Form(forms.Form):
-    Sname=forms.CharField(validators=[validate_for_name])
+    Sname=forms.CharField(validators=[validate_for_name,validators.MinLengthValidator(5)])
     Password=forms.CharField(widget=forms.PasswordInput,validators=[validate_for_password])
     Reenterpassword=forms.CharField(widget=forms.PasswordInput,validators=[validate_for_password])
     Email=forms.EmailField()
@@ -21,6 +22,7 @@ class Student_Form(forms.Form):
     Saggregrate_12=forms.IntegerField()
     Squalification_Degree=forms.CharField()
     Saggregrate_Degree=forms.IntegerField()
+    botcatcher=forms.CharField(required=False,widget=forms.HiddenInput)
 
     def clean(self):
         Pa=self.cleaned_data['Password']
@@ -31,3 +33,8 @@ class Student_Form(forms.Form):
         RE=self.cleaned_data['ReenterEmail']
         if E!=RE:
             raise forms.ValidationError('Email doesnot match')
+        
+    def clean_botcatcher(self):
+        b=self.cleaned_data['botcatcher']
+        if len(b)>0:
+            raise forms.ValidationError('Bot')
